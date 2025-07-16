@@ -1,3 +1,4 @@
+
 /*
  *
  * Copyright 2021-2025 Software Radio Systems Limited
@@ -39,7 +40,7 @@ struct cell_selection_info {
   bounded_integer<int, -43, -12> q_qual_min = -20;
 };
 
-enum class sib_type : unsigned { sib1 = 1, sib2 = 2, sib6 = 6, sib7 = 7, sib8 = 8, sib19 = 19, sib_invalid };
+enum class sib_type : unsigned { sib1 = 1, sib2 = 2, sib3 = 3, sib6 = 6, sib7 = 7, sib8 = 8, sib19 = 19, sib_invalid };
 
 /// Configures a pattern of SSBs. See TS 38.331, \c SSB-ToMeasure.
 /// Equates to longBitmap when size of bitset equals to 64.
@@ -179,6 +180,35 @@ struct sib2_info {
   bool derive_ssb_index_from_cell;
 };
 
+struct intra_frequency_neigh_cell_info {
+  /// TBD.
+  uint16_t nr_pci;
+  /// TBD..
+  int8_t q_offset_cell;
+  /// TBD.
+  std::optional<uint8_t> q_rx_lev_min_offset;
+  /// TBD..
+  std::optional<uint8_t> q_rx_lev_min_offset_sul;
+  /// TBD..
+  std::optional<uint8_t> q_qual_min_offset_cell;
+};
+
+struct pci_range {
+  /// TBD.
+  uint16_t nr_pci_start;
+  /// TBD.
+  std::optional<uint16_t> range;
+};
+
+struct sib3_info {
+  // This user provided constructor is added here to fix a Clang compilation error related to the use of nested types
+  // with std::optional.
+  sib3_info() {}
+  
+  std::vector<intra_frequency_neigh_cell_info> intra_freq_neigh_cell_info;
+  std::vector<pci_range> intra_freq_black_cell_info;
+};
+
 /// ETWS primary notification SIB contents (see TS38.331 Section 6.3.2, Information Element \e SIB6).
 struct sib6_info {
   /// \brief Parameter "messageIdentifier".
@@ -276,12 +306,15 @@ struct sib19_info {
 };
 
 /// \brief Variant type that can hold different types of SIBs that go in a SI message.
-using sib_info = std::variant<sib2_info, sib6_info, sib7_info, sib8_info, sib19_info>;
+using sib_info = std::variant<sib2_info, sib3_info, sib6_info, sib7_info, sib8_info, sib19_info>;
 
 inline sib_type get_sib_info_type(const sib_info& sib)
 {
   if (std::holds_alternative<sib2_info>(sib)) {
     return sib_type::sib2;
+  }
+  if (std::holds_alternative<sib3_info>(sib)) {
+    return sib_type::sib3;
   }
   if (std::holds_alternative<sib6_info>(sib)) {
     return sib_type::sib6;
