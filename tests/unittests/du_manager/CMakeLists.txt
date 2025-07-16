@@ -41,6 +41,16 @@ target_link_libraries(ue_manager_test
 target_include_directories(ue_manager_test PRIVATE ${CMAKE_SOURCE_DIR})
 gtest_discover_tests(ue_manager_test)
 
+add_executable(sib3_test sib3_test.cpp)
+target_link_libraries(sib3_test
+        du_manager_test_helpers
+        srsran_du_manager
+        srsran_support
+        srslog
+        gtest
+        gtest_main)
+target_include_directories(sib3_test PRIVATE ${CMAKE_SOURCE_DIR})
+gtest_discover_tests(sib3_test)
 
 add_executable(sib_test sib_test.cpp)
 target_link_libraries(sib_test
