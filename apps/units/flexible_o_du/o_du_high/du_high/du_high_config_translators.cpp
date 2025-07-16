@@ -1,3 +1,4 @@
+
 /*
  *
  * Copyright 2021-2025 Software Radio Systems Limited
@@ -122,6 +123,15 @@ static sib2_info create_sib2_info()
   sib2.cell_reselection_priority = 6;
   sib2.thresh_serving_low_p      = 0;
   return sib2;
+}
+
+static sib3_info create_sib3_info()
+{
+  sib3_info sib3;
+  sib3.intra_freq_neigh_cell_info.nr_pci        = 50; // neighbor pci 
+  sib3.intra_freq_neigh_cell_info.q_offset_cell = 20; // dB5
+  sib3.intra_freq_black_cell_info.nr_pci_start  = 31; // blaclisted pci
+  return sib3;
 }
 
 static sib6_info create_sib6_info(const du_high_unit_sib_config::etws_config& etws_cfg)
@@ -422,6 +432,9 @@ std::vector<srs_du::du_cell_config> srsran::generate_du_cell_config(const du_hig
         switch (sib_id) {
           case 2: {
             item = create_sib2_info();
+          } break;
+		  case 3: {
+            item = create_sib3_info();
           } break;
           case 6: {
             if (!base_cell.sib_cfg.etws_cfg.has_value()) {
