@@ -1,3 +1,4 @@
+
 /*
  *
  * Copyright 2021-2025 Software Radio Systems Limited
@@ -356,6 +357,7 @@ static asn1::rrc_nr::sib1_s make_asn1_rrc_cell_sib1(const du_cell_config& du_cfg
             if (static_cast<std::underlying_type_t<sib_type>>(type) == sib_id) {
               switch (type) {
                 case sib_type::sib2:
+				case sib_type::sib3:
                 case sib_type::sib6:
                 case sib_type::sib7:
                 case sib_type::sib8: {
@@ -475,6 +477,16 @@ static asn1::rrc_nr::sib2_s make_asn1_rrc_cell_sib2(const sib2_info& sib2_params
   return sib2;
 }
 
+static asn1::rrc_nr::sib3_s make_asn1_rrc_cell_sib3(const sib3_info& sib3_params)
+{
+  using namespace asn1::rrc_nr;
+  sib3_s sib3;
+
+  sib3.intra_freq_neigh_cell_info.nr_pci         = sib3_params.intra_freq_neigh_cell_info.nr_pci;
+  sib3.intra_freq_neigh_cell_info.q_offset_cell  = sib3_params.intra_freq_neigh_cell_info.q_offset_cell;
+  sib3.intra_freq_black_cell_info.nr_pci_start   = sib3_params.intra_freq_black_cell_info.nr_pci_start;
+  return sib3;
+}
 static asn1::rrc_nr::sib6_s make_asn1_rrc_cell_sib6(const sib6_info& sib6_params)
 {
   using namespace asn1::rrc_nr;
@@ -814,6 +826,15 @@ static std::vector<asn1::rrc_nr::sys_info_ies_s::sib_type_and_info_item_c_> make
       if (cfg.nof_ssbs_to_average.has_value()) {
         out_sib.cell_resel_info_common.nrof_ss_blocks_to_average_present = true;
         out_sib.cell_resel_info_common.nrof_ss_blocks_to_average         = cfg.nof_ssbs_to_average.value();
+      }
+      break;
+    }
+	case sib_type::sib3: {
+      const auto& cfg     = std::get<sib3_info>(sib);
+      sib3_s&     out_sib = ret.front().set_sib3();
+      out_sib             = make_asn1_rrc_cell_sib3(cfg);
+      if (cfg.intra_freq_black_cell_info.range.has_value()) {
+        out_sib.intra_freq_black_cell_info.range         = cfg.intra_freq_black_cell_info.range.value();
       }
       break;
     }
