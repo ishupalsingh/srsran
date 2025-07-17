@@ -487,7 +487,7 @@ static asn1::rrc_nr::sib3_s make_asn1_rrc_cell_sib3(const sib3_info& sib3_params
 	// Map int8_t to enum: 
     	bool rok = asn1::number_to_enum(intra_neigh.q_offset_cell, intra_neigh_info.q_offset_cell);
     	srsran_assert(rok, "Invalid q_offset_cell value");
-    	sib3.intra_freq_neigh_cell_list.emplace_back(intra_neigh);
+    	sib3.intra_freq_neigh_cell_list.push_back(intra_neigh);
     }
    // Populate intra_freq_black_cell_list if any
    for (const auto& intra_neigh_black_info : sib3_params.intra_freq_black_cell_info) {
@@ -498,7 +498,7 @@ static asn1::rrc_nr::sib3_s make_asn1_rrc_cell_sib3(const sib3_info& sib3_params
         	srsran_assert(rok, "Invalid range value");
         	intra_neigh_black.range_present = true;
     	}
-       	sib3.intra_freq_excluded_cell_list.emplace_back(intra_neigh_black);
+       	sib3.intra_freq_excluded_cell_list.push_back(intra_neigh_black);
     }
     return sib3;
 }
