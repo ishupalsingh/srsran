@@ -181,22 +181,20 @@ struct sib2_info {
 };
 
 struct intra_frequency_neigh_cell_info {
-  /// TBD.
+  /// pci of the neighbor intra-freq cell.
   uint16_t nr_pci;
-  /// TBD..
+  /// cell individual offset which is applied based on offset better or worse than serving cell
   int8_t q_offset_cell;
-  /// TBD.
   std::optional<uint8_t> q_rx_lev_min_offset;
-  /// TBD..
   std::optional<uint8_t> q_rx_lev_min_offset_sul;
-  /// TBD..
   std::optional<uint8_t> q_qual_min_offset_cell;
 };
 
 struct pci_range {
-  /// TBD.
+  /// pci start value for blacklisting.
   uint16_t nr_pci_start;
-  /// TBD.
+  /// The range of PCIs to be blcklisted is provided below, its an enum
+  /// ENUMERATED {n4, n8, n12, n16, n24, n32, n48, n64, n84,n96, n128, n168, n252, n504, n1008,spare1}
   std::optional<uint16_t> range;
 };
 
@@ -204,9 +202,11 @@ struct sib3_info {
   // This user provided constructor is added here to fix a Clang compilation error related to the use of nested types
   // with std::optional.
   sib3_info() {}
-  
+  // List of intra-frequency neighbouring cells with specific cell re-selection parameters
   std::vector<intra_frequency_neigh_cell_info> intra_freq_neigh_cell_info;
+  // List of exclude-listed intra-frequency neighbouring cells.
   std::vector<pci_range> intra_freq_black_cell_info;
+ // intraFreqNeighCellList-v1610, intraFreqAllowedCellList-r16 are Rel-16, can be added later if required
 };
 
 /// ETWS primary notification SIB contents (see TS38.331 Section 6.3.2, Information Element \e SIB6).
