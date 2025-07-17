@@ -502,6 +502,21 @@ static asn1::rrc_nr::sib3_s make_asn1_rrc_cell_sib3(const sib3_info& sib3_params
     }
     return sib3;
 }
+byte_buffer asn1_packer::pack_sib3(const sib3_info& sib3_params, std::string* js_str)
+{
+  byte_buffer               buf;
+  asn1::bit_ref             bref{buf};
+  asn1::rrc_nr::sib3_s sib19 = make_asn1_rrc_cell_sib3(sib3_params);
+  asn1::SRSASN_CODE         ret   = sib3.pack(bref);
+  srsran_assert(ret == asn1::SRSASN_SUCCESS, "Failed to pack SIB3");
+
+  if (js_str != nullptr) {
+    asn1::json_writer js;
+    sib19.to_json(js);
+    *js_str = js.to_string();
+  }
+  return buf;
+}
 static asn1::rrc_nr::sib6_s make_asn1_rrc_cell_sib6(const sib6_info& sib6_params)
 {
   using namespace asn1::rrc_nr;
