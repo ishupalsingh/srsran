@@ -512,7 +512,7 @@ byte_buffer asn1_packer::pack_sib3(const sib3_info& sib3_params, std::string* js
 
   if (js_str != nullptr) {
     asn1::json_writer js;
-    sib19.to_json(js);
+    sib3.to_json(js);
     *js_str = js.to_string();
   }
   return buf;
