@@ -481,19 +481,19 @@ static asn1::rrc_nr::sib3_s make_asn1_rrc_cell_sib3(const sib3_info& sib3_params
     using namespace asn1::rrc_nr;
     sib3_s sib3;
     // Populate intra_freq_neigh_cell_list based on number of intra freq neighbor cells
-    for (const auto& intra_neigh_info : sib3_params.intra_freq_neigh_cell_info) {
-        sib3_s::intra_freq_neigh_cell_item_s intra_neigh;
-        intra_neigh.nr_pci = intra_neigh_info.nr_pci;
-        intra_neigh.q_offset_cell = intra_neigh_info.q_offset_cell;
-        sib3.intra_freq_neigh_cell_list.emplace_back(intra_neigh);
+   for (const auto& intra_neigh_info : sib3_params.intra_freq_neigh_cell_info) {
+    	asn1::rrc_nr::intra_freq_neigh_cell_item_s intra_neigh;
+    	intra_neigh.nr_pci = intra_neigh_info.nr_pci;
+    	intra_neigh.q_offset_cell = intra_neigh_info.q_offset_cell;
+    	sib3.intra_freq_neigh_cell_list.emplace_back(intra_neigh);
     }
     // Populate intra_freq_black_cell_list if any
-    for (const auto& intra_neigh_black_info : sib3_params.intra_freq_black_cell_info) {
-        sib3_s::intra_freq_black_cell_item_s intra_neigh_black;
-        intra_neigh_black.nr_pci_start = intra_neigh_black_info.nr_pci_start;
-	intra_neigh_black.range_present = true;
-        intra_neigh_black.range = intra_neigh_black_info.range; 
-        sib3.intra_freq_black_cell_list.emplace_back(intra_neigh_black);
+   for (const auto& intra_neigh_black_info : sib3_params.intra_freq_black_cell_info) {
+    	asn1::rrc_nr::intra_freq_black_cell_item_s intra_neigh_black;
+    	intra_neigh_black.nr_pci_start = intra_neigh_black_info.nr_pci_start;
+    	intra_neigh_black.range_present = true;
+    	intra_neigh_black.range = intra_neigh_black_info.range;
+    	sib3.intra_freq_black_cell_list.emplace_back(intra_neigh_black);
     }
     return sib3;
 }
@@ -843,9 +843,6 @@ static std::vector<asn1::rrc_nr::sys_info_ies_s::sib_type_and_info_item_c_> make
       const auto& cfg     = std::get<sib3_info>(sib);
       sib3_s&     out_sib = ret.front().set_sib3();
       out_sib             = make_asn1_rrc_cell_sib3(cfg);
-      if (cfg.intra_freq_black_cell_info.range.has_value()) {
-        out_sib.intra_freq_black_cell_info.range         = cfg.intra_freq_black_cell_info.range.value();
-      }
       break;
     }
     case sib_type::sib6: {
