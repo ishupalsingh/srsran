@@ -6,7 +6,7 @@
  * This file is part of srsRAN.
  *
  * srsRAN is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
+ * it under the terms of the GNU Affero General Public License asf
  * published by the Free Software Foundation, either version 3 of
  * the License, or (at your option) any later version.
  *
@@ -506,7 +506,7 @@ byte_buffer asn1_packer::pack_sib3(const sib3_info& sib3_params, std::string* js
 {
   byte_buffer               buf;
   asn1::bit_ref             bref{buf};
-  asn1::rrc_nr::sib3_s sib19 = make_asn1_rrc_cell_sib3(sib3_params);
+  asn1::rrc_nr::sib3_s sib3 = make_asn1_rrc_cell_sib3(sib3_params);
   asn1::SRSASN_CODE         ret   = sib3.pack(bref);
   srsran_assert(ret == asn1::SRSASN_SUCCESS, "Failed to pack SIB3");
 
