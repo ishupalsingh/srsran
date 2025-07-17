@@ -133,8 +133,8 @@ static sib3_info create_sib3_info()
   sib3.intra_freq_neigh_cell_info[0].q_offset_cell = 20; // dB5
 
   sib3.intra_freq_black_cell_info.resize(1);
-  sib3.intra_freq_black_cell_info[0].nr_pci_start  = 31; // blacklisted pci
-  sib3.intra_freq_black_cell_info[0].range = 5;
+  sib3.intra_freq_black_cell_info[0].nr_pci_start  = 150; // blacklisted pci
+  sib3.intra_freq_black_cell_info[0].range = 2;
   return sib3;
 }
 
