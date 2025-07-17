@@ -128,9 +128,13 @@ static sib2_info create_sib2_info()
 static sib3_info create_sib3_info()
 {
   sib3_info sib3;
-  sib3.intra_freq_neigh_cell_info.nr_pci        = 50; // neighbor pci 
-  sib3.intra_freq_neigh_cell_info.q_offset_cell = 20; // dB5
-  sib3.intra_freq_black_cell_info.nr_pci_start  = 31; // blaclisted pci
+  sib3.intra_freq_neigh_cell_info.resize(1);
+  sib3.intra_freq_neigh_cell_info[0].nr_pci        = 50; // neighbor pci 
+  sib3.intra_freq_neigh_cell_info[0].q_offset_cell = 20; // dB5
+
+  sib3.intra_freq_black_cell_info.resize(1);
+  sib3.intra_freq_black_cell_info[0].nr_pci_start  = 31; // blacklisted pci
+  sib3.intra_freq_black_cell_info[0].range = 5;
   return sib3;
 }
 
