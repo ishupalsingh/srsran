@@ -45,6 +45,8 @@ byte_buffer pack_mib(const du_cell_config& du_cfg);
 /// \return byte buffer with packed cell SIB1.
 byte_buffer pack_sib1(const du_cell_config& du_cfg, std::string* js_str = nullptr);
 
+/// \brief Derive and pack cell SIB3.
+byte_buffer pack_sib3(const sib3_info& sib3_params, std::string* js_str = nullptr);
 /// \brief Derive and pack cell SIB19.
 byte_buffer pack_sib19(const sib19_info& sib19_params, std::string* js_str = nullptr);
 
