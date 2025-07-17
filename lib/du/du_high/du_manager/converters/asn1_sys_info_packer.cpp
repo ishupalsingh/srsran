@@ -357,7 +357,7 @@ static asn1::rrc_nr::sib1_s make_asn1_rrc_cell_sib1(const du_cell_config& du_cfg
             if (static_cast<std::underlying_type_t<sib_type>>(type) == sib_id) {
               switch (type) {
                 case sib_type::sib2:
-				case sib_type::sib3:
+		case sib_type::sib3:
                 case sib_type::sib6:
                 case sib_type::sib7:
                 case sib_type::sib8: {
@@ -482,12 +482,12 @@ static asn1::rrc_nr::sib3_s make_asn1_rrc_cell_sib3(const sib3_info& sib3_params
   using namespace asn1::rrc_nr;
   sib3_s sib3;
   sib3.intra_freq_neigh_cell_list.resize(1);
-  sib3.intra_freq_neigh_cell_list[0].nr_pci         = sib3_params.intra_freq_neigh_cell_info.nr_pci;
-  sib3.intra_freq_neigh_cell_list[0].q_offset_cell  = sib3_params.intra_freq_neigh_cell_info.q_offset_cell;
+  sib3.intra_freq_neigh_cell_list[0].nr_pci           = sib3_params.intra_freq_neigh_cell_info[0].nr_pci;
+  sib3.intra_freq_neigh_cell_list[0].q_offset_cell    = sib3_params.intra_freq_neigh_cell_info[0].q_offset_cell;
   sib3.intra_freq_excluded_cell_list.resize(1);
-  sib3.intra_freq_excluded_cell_list[0].nr_pci_start   = sib3_params.intra_freq_black_cell_info.nr_pci_start;
+  sib3.intra_freq_excluded_cell_list[0].nr_pci_start  = sib3_params.intra_freq_black_cell_info[0].nr_pci_start;
   sib3.intra_freq_excluded_cell_list[0].range_present = true;
-  sib3.intra_freq_excluded_cell_list[0].range = sib3_params.intra_freq_black_cell_info.range;	
+  sib3.intra_freq_excluded_cell_list[0].range         = sib3_params.intra_freq_black_cell_info[0].range;	
   return sib3;
 }
 static asn1::rrc_nr::sib6_s make_asn1_rrc_cell_sib6(const sib6_info& sib6_params)
