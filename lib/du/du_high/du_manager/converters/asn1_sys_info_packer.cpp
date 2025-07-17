@@ -476,19 +476,26 @@ static asn1::rrc_nr::sib2_s make_asn1_rrc_cell_sib2(const sib2_info& sib2_params
   sib2.intra_freq_cell_resel_info.t_resel_nr       = sib2_params.t_reselection_nr;
   return sib2;
 }
-
 static asn1::rrc_nr::sib3_s make_asn1_rrc_cell_sib3(const sib3_info& sib3_params)
 {
-  using namespace asn1::rrc_nr;
-  sib3_s sib3;
-  sib3.intra_freq_neigh_cell_list.resize(1);
-  sib3.intra_freq_neigh_cell_list[0].nr_pci           = sib3_params.intra_freq_neigh_cell_info[0].nr_pci;
-  sib3.intra_freq_neigh_cell_list[0].q_offset_cell    = sib3_params.intra_freq_neigh_cell_info[0].q_offset_cell;
-  sib3.intra_freq_excluded_cell_list.resize(1);
-  sib3.intra_freq_excluded_cell_list[0].nr_pci_start  = sib3_params.intra_freq_black_cell_info[0].nr_pci_start;
-  sib3.intra_freq_excluded_cell_list[0].range_present = true;
-  sib3.intra_freq_excluded_cell_list[0].range         = sib3_params.intra_freq_black_cell_info[0].range;	
-  return sib3;
+    using namespace asn1::rrc_nr;
+    sib3_s sib3;
+    // Populate intra_freq_neigh_cell_list based on number of intra freq neighbor cells
+    for (const auto& intra_neigh_info : sib3_params.intra_freq_neigh_cell_info) {
+        sib3_s::intra_freq_neigh_cell_item_s intra_neigh;
+        intra_neigh.nr_pci = intra_neigh_info.nr_pci;
+        intra_neigh.q_offset_cell = intra_neigh_info.q_offset_cell;
+        sib3.intra_freq_neigh_cell_list.emplace_back(intra_neigh);
+    }
+    // Populate intra_freq_black_cell_list if any
+    for (const auto& intra_neigh_black_info : sib3_params.intra_freq_black_cell_info) {
+        sib3_s::intra_freq_black_cell_item_s intra_neigh_black;
+        intra_neigh_black.nr_pci_start = intra_neigh_black_info.nr_pci_start;
+	intra_neigh_black.range_present = true;
+        intra_neigh_black.range = intra_neigh_black_info.range; 
+        sib3.intra_freq_black_cell_list.emplace_back(intra_neigh_black);
+    }
+    return sib3;
 }
 static asn1::rrc_nr::sib6_s make_asn1_rrc_cell_sib6(const sib6_info& sib6_params)
 {
