@@ -525,15 +525,15 @@ static asn1::rrc_nr::sib3_s make_asn1_rrc_cell_sib3(const sib3_info& sib3_params
 byte_buffer asn1_packer::pack_sib3(const sib3_info& sib3_params, std::string* js_str)
 {
   byte_buffer buf;
-  // resizing it to 1024 size
-  buf.resize(1024); // Pick a size large enough for SIB3
+  // resizing it to 1024 size, not a optimal way, need to change it later
+  if (!buf.resize(1024)) {
+  srsran_assert(false, "Failed to resize buffer for SIB3");
+  }
   asn1::bit_ref bref{buf};
   asn1::rrc_nr::sib3_s sib3 = make_asn1_rrc_cell_sib3(sib3_params);
   asn1::SRSASN_CODE ret = sib3.pack(bref);
   srsran_assert(ret == asn1::SRSASN_SUCCESS, "Failed to pack SIB3");
-  // Trying .tell_bytes() as I am not too sure about it
-  buf.resize(bref.tell_bytes());
- 
+   
   if (js_str != nullptr) {
     asn1::json_writer js;
     sib3.to_json(js);
