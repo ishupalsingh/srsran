@@ -517,7 +517,8 @@ static asn1::rrc_nr::sib3_s make_asn1_rrc_cell_sib3(const sib3_info& sib3_params
 	      continue; // avoiding assert as of now if the number to enum conversion fails
     	   intra_neigh_white_r16.range_present = true;
 	 }
-       	sib3.intra_freq_allowed_cell_list_r16->push_back(intra_neigh_white_r16);;
+       	sib3.intra_freq_allowed_cell_list_r16->push_back(intra_neigh_white_r16);
+	sib3.ext = true;   
     }
     return sib3;
 }
