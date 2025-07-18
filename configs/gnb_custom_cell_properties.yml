@@ -34,6 +34,25 @@ cell_cfg:
   tac: 7
   pci: 1
 
+sib3:
+  intra_freq_neigh_cells:
+    - nr_pci: 10
+      q_offset: 1
+    - nr_pci: 20
+      q_offset: -4
+  intra_freq_black_cells:
+    - start: 301
+      range: 2
+    - start: 401
+      range: 0
+  intra_freq_white_cells_r16:
+    - start: 101
+      range: 1
+    - start: 204
+      range: 2
+    - start: 210
+      range: 0
+
 # This section is represented as an array of cells. For this example, a single cell is declared that overrides the PCI and channel bandwidth properties from the default values.
 cells:
   - pci: 10
