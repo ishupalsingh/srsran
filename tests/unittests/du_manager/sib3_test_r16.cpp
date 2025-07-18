@@ -36,9 +36,12 @@ TEST(srs_sib3_r16_test, make_asn1_rrc_cell_sib3_r16_buffer)
   EXPECT_EQ(ret, asn1::SRSASN_SUCCESS);
 
   // Check that the decoded sib3 matches the sib3 configuration used in the test
-  if(sib3_decoded.intra_freq_allowed_cell_list_r16.get() != nullptr)
+  for(i=0<; i<3; ++i)
   {  
-     EXPECT_EQ(sib3_decoded.intra_freq_allowed_cell_list_r16->size(), sib3.intra_freq_white_cell_info_r16.size());
-  }
+     if(sib3_decoded.intra_freq_allowed_cell_list_r16[i])
+     {  
+        EXPECT_EQ(sib3_decoded.intra_freq_allowed_cell_list_r16[i].start, 100+i);
+     }
+  } 
 }
 
