@@ -37,7 +37,7 @@ TEST(srs_sib3_r16_test, make_asn1_rrc_cell_sib3_r16_buffer)
   EXPECT_EQ(ret, asn1::SRSASN_SUCCESS);
 
   // Check that the decoded sib3 matches the sib3 configuration used in the test
-  if (static_cast<bool>(sib3_decoded.intra_freq_allowed_cell_list_r16)) 
+  if (sib3_decoded.intra_freq_allowed_cell_list_r16.get() != nullptr)
   {
      auto& cell_list = *sib3_decoded.intra_freq_allowed_cell_list_r16;
      ASSERT_EQ(cell_list.size(), 3); // Add this to ensure the list is the expected size
