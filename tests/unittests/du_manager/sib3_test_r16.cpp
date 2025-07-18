@@ -1,0 +1,41 @@
+
+#include "lib/du/du_high/du_manager/converters/asn1_sys_info_packer.h"
+#include "srsran/asn1/rrc_nr/sys_info.h"
+#include "srsran/ran/sib/system_info_config.h"
+#include <gtest/gtest.h>
+#include <string>
+
+using namespace srsran;
+using namespace srs_du;
+
+TEST(srs_sib3_r16_test, make_asn1_rrc_cell_sib3_r16_buffer)
+{
+  sib3_info sib3;
+  // Create three white cells with example values
+  for (int i = 0; i < 3; ++i) {
+    pci_range _pci_range;
+    _pci_range.nr_pci_start = 100 + i;
+    _pci_range.range = i + 2; // Example range
+    sib3.intra_freq_white_cell_info_r16.emplace_back(_pci_range);
+  }
+
+  // Call the function being tested
+  std::string js_str;
+  auto buf = asn1_packer::pack_sib3(sib3, &js_str);
+
+  // Check that the buffer is not empty
+  EXPECT_FALSE(buf.empty());
+
+  // Check that the JSON string is not empty
+  EXPECT_FALSE(js_str.empty());
+
+  // Decode the buffer to verify its contents
+  asn1::cbit_ref bref(buf);
+  asn1::rrc_nr::sib3_s sib3_decoded;
+  asn1::SRSASN_CODE ret = sib3_decoded.unpack(bref);
+  EXPECT_EQ(ret, asn1::SRSASN_SUCCESS);
+
+  // Check that the decoded sib3 matches the sib3 configuration used in the test
+  EXPECT_EQ(sib3.intra_freq_white_cell_info_r16.size(), 3);
+  EXPECT_EQ(sib3_decoded.intra_freq_allowed_cell_list_r16.size(), sib3.intra_freq_white_cell_info_r16.size());
+}
