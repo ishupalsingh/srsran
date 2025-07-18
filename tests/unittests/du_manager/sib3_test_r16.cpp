@@ -37,6 +37,6 @@ TEST(srs_sib3_r16_test, make_asn1_rrc_cell_sib3_r16_buffer)
 
   // Check that the decoded sib3 matches the sib3 configuration used in the test
   EXPECT_EQ(sib3.intra_freq_white_cell_info_r16.size(), 3);
-  ASSERT_TRUE(sib3_decoded.intra_freq_allowed_cell_list_r16 != nullptr);
+  ASSERT_TRUE(sib3_decoded.intra_freq_allowed_cell_list_r16); // Checks if the copy_ptr is non-null
   EXPECT_EQ(sib3_decoded.intra_freq_allowed_cell_list_r16->size(), sib3.intra_freq_white_cell_info_r16.size());
 }
