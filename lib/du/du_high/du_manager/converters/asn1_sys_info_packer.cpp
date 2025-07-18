@@ -504,6 +504,20 @@ static asn1::rrc_nr::sib3_s make_asn1_rrc_cell_sib3(const sib3_info& sib3_params
 	}
        	sib3.intra_freq_excluded_cell_list.push_back(intra_neigh_black);
     }
+   // Populate intra_freq_white_cell_list if any
+   for (const auto& intra_neigh_white_info : sib3_params.intra_freq_white_cell_info_r16) 
+   {
+    	asn1::rrc_nr::pci_range_s intra_neigh_white_r16;
+    	intra_neigh_white_r16.start = intra_neigh_white_info_r16.nr_pci_start;
+    	if (intra_neigh_white_info_r16.range.has_value()) 
+	{
+    	   bool rok = asn1::number_to_enum(intra_neigh_white_r16.range, intra_neigh_white_info_r16.range.value());
+    	   if (!rok) 
+	     continue; // avoiding assert as of now if the number to enum conversion fails
+    	   intra_neigh_white_r16.range_present = true;
+	}
+       	sib3.intra_freq_allowed_cell_list_r16.add(intra_neigh_white_r16);;
+    }
     return sib3;
 }
 byte_buffer asn1_packer::pack_sib3(const sib3_info& sib3_params, std::string* js_str)
