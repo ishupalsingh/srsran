@@ -52,6 +52,17 @@ target_link_libraries(sib3_test
 target_include_directories(sib3_test PRIVATE ${CMAKE_SOURCE_DIR})
 gtest_discover_tests(sib3_test)
 
+add_executable(sib3_test_r16 sib3_test_r16.cpp)
+target_link_libraries(sib3_test_r16
+        du_manager_test_helpers
+        srsran_du_manager
+        srsran_support
+        srslog
+        gtest
+        gtest_main)
+target_include_directories(sib3_test_r16 PRIVATE ${CMAKE_SOURCE_DIR})
+gtest_discover_tests(sib3_test_r16)
+
 add_executable(sib_test sib_test.cpp)
 target_link_libraries(sib_test
         du_manager_test_helpers
