@@ -206,7 +206,9 @@ struct sib3_info {
   std::vector<intra_frequency_neigh_cell_info> intra_freq_neigh_cell_info;
   // List of exclude-listed intra-frequency neighbouring cells.
   std::vector<pci_range> intra_freq_black_cell_info;
- // intraFreqNeighCellList-v1610, intraFreqAllowedCellList-r16 are Rel-16, can be added later if required
+  // In Rel 16, white cell list was added, which allows only those PCIs to be part of cell-reselection list
+  std::vector<pci_range> intra_freq_white_cell_info_r16;
+ // intraFreqNeighCellList-v1610 is again in Rel-16, can be added later if required
 };
 
 /// ETWS primary notification SIB contents (see TS38.331 Section 6.3.2, Information Element \e SIB6).
