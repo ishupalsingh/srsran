@@ -12,7 +12,8 @@ TEST(srs_sib3_r16_test, make_asn1_rrc_cell_sib3_r16_buffer)
 {
   sib3_info sib3;
   // Create three white cells with example values
-  for (int i = 0; i < 3; ++i) {
+  for (int i = 0; i < 3; ++i) 
+  {
     pci_range _pci_range;
     _pci_range.nr_pci_start = 100 + i;
     _pci_range.range = i + 2; // Example range
@@ -36,12 +37,18 @@ TEST(srs_sib3_r16_test, make_asn1_rrc_cell_sib3_r16_buffer)
   EXPECT_EQ(ret, asn1::SRSASN_SUCCESS);
 
   // Check that the decoded sib3 matches the sib3 configuration used in the test
-  for(i=0<; i<3; ++i)
-  {  
-     if(sib3_decoded.intra_freq_allowed_cell_list_r16[i])
-     {  
-        EXPECT_EQ(sib3_decoded.intra_freq_allowed_cell_list_r16[i].start, 100+i);
+  if (sib3_decoded.intra_freq_allowed_cell_list_r16) 
+  {
+     auto& cell_list = *sib3_decoded.intra_freq_allowed_cell_list_r16;
+     ASSERT_EQ(cell_list.size(), 3); // Add this to ensure the list is the expected size
+     for (int i = 0; i < 3; ++i) 
+     {
+        EXPECT_EQ(cell_list[i].start, 100 + i);
      }
   } 
+  else 
+  {
+    FAIL() << "Decoded intra_freq_allowed_cell_list_r16 is null";
+  }
 }
 
